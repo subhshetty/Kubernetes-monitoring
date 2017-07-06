@@ -1,0 +1,15 @@
+---
+- name: Transfer and execute a script.
+  hosts: kuber
+  become: yes
+  tasks:
+      - name: Copy and Execute the script
+        shell: kubectl describe node > ex.txt
+        register: result
+        ignore_errors: yes
+#        args:
+ #        executable: /bin/bash
+      - name: clear kuber.log
+        local_action: shell > /root/kuber.log
+      - name: fetch output
+        fetch: src=/root/ex.txt dest=/root/kuber.log flat=yes
